@@ -6,6 +6,8 @@ import com.codingshuttle.youtube.hospitalManagement.service.PatientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -28,8 +30,17 @@ public class PatientTests {
     public void testTransactionMethod() {
 //        Patient patient = patientService.getPatientById(1L);
 
-        Patient patient = patientRepository.findByName("Diya Patel");
+//        Patient patient = patientRepository.findByName("Diya Patel");
+//        System.out.println(patient);
 
-        System.out.println(patient);
+        Page<Patient> patientsList = patientRepository.findAllPatients(PageRequest.of(  4, 3));
+
+        for(Patient p : patientsList) {
+            System.out.println(p);
+        }
     }
+
+
+
+
 }
