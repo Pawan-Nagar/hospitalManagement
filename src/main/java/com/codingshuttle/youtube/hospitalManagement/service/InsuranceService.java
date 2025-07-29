@@ -6,6 +6,7 @@ import com.codingshuttle.youtube.hospitalManagement.entity.Patient;
 import com.codingshuttle.youtube.hospitalManagement.repository.InsuranceRepository;
 import com.codingshuttle.youtube.hospitalManagement.repository.PatientRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +14,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class InsuranceService {
 
-    private InsuranceRepository insuranceRepository;
-    private PatientRepository patientRepository;
+    private final InsuranceRepository insuranceRepository;
+    private final PatientRepository patientRepository;
 
+    @Transactional
     public Patient assignInsuranceToPatient(Insurance insurance, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow( ()-> new EntityNotFoundException("Patient Not found with id" + patientId));
 
+        patient.setInsurance(insurance);
         insurance.setPatient(patient);
+
+        insuranceRepository.save(insurance);
 
         return patient;
     }

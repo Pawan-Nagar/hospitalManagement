@@ -3,9 +3,7 @@ package com.codingshuttle.youtube.hospitalManagement.entity;
 
 import com.codingshuttle.youtube.hospitalManagement.type.BloodGroupType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
@@ -16,6 +14,9 @@ import java.util.List;
 @ToString
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(
         name = "patient"
 //        uniqueConstraints = {
@@ -50,7 +51,9 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     private BloodGroupType bloodGroup;
 
-    @OneToOne
+    @Getter
+    @Setter
+    @OneToOne( cascade = {CascadeType.MERGE, CascadeType.PERSIST} )
     @JoinColumn(name = "patient_insurance_id")  //owning side
     private Insurance insurance;
 
@@ -67,4 +70,13 @@ public class Patient {
                 ", gender='" + gender + '\'' +
                 '}';
     }
+
+    public void setInsurance(Insurance insurance) {
+        this.insurance = insurance;
+    }
+
+    public Insurance getInsurance() {
+        return insurance;
+    }
+
 }
