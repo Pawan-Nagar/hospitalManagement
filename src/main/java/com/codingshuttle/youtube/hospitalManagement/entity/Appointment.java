@@ -23,4 +23,12 @@ public class Appointment {
 
     @Column(length = 500)
     private String reason;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id", nullable = false)
+    private Patient patient;
+
+    @ManyToOne
+    @JoinColumn( nullable = false)
+    private Doctor doctor;
 }
